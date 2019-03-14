@@ -273,18 +273,20 @@ ST_ATHAN_TIME Athan::Calculate_Time_Update(ST_ATHAN_TIME t1, ST_ATHAN_TIME t2, b
 	if(isUpward) {
 		ret.hour = t1.hour + t2.hour;
 		ret.min = t1.min + t2.min;
-		if(ret.min > 60) {
-			ret.min = ret.min - 60;
-			ret.hour = ret.hour + 1;			
-		}
 	} else {
 		if(t1.min < t2.min) {
 			ret.hour = t1.hour - t2.hour - 1;
-			ret.min = 60 + t1.min - t2.min;			
+			ret.min = (60 + t1.min - t2.min);	
 		} else {
+			
 			ret.hour = t1.hour - t2.hour;
-			ret.min = t1.min - t2.min;
+			ret.min = (t1.min - t2.min);
 		}
+	}
+
+	if(ret.min >= 60) {
+		ret.min = (ret.min - 60);
+		ret.hour = ret.hour + 1;			
 	}
 	
 	return ret;	
@@ -305,7 +307,7 @@ ST_ATHAN_TIME Athan::Get_Athan_Subuh()
 	
 	ST_ATHAN_TIME athan_time;
 	athan_time.hour = int(hour);
-	athan_time.min = int(min*60 + m_offset_time);
+	athan_time.min = int(min*60);
 	athan_time.sec = 0;
 	
 	return Calculate_Time_Update(Get_Athan_Zuhur(), athan_time, false);
@@ -326,7 +328,7 @@ ST_ATHAN_TIME Athan::Get_Sunrise()
 	
 	ST_ATHAN_TIME athan_time;
 	athan_time.hour = int(hour);
-	athan_time.min = int(min*60 + m_offset_time);
+	athan_time.min = int(min*60);
 	athan_time.sec = 0;
 	
 	return Calculate_Time_Update(Get_Athan_Zuhur(), athan_time, false);
@@ -362,13 +364,13 @@ ST_ATHAN_TIME Athan::Get_Athan_Asar()
 {	
 	double hour = 0;
 	double min = 0;
-	double time = Calculate_Time_Diff_Asr(1);
+	double time = Calculate_Time_Diff_Asr(T_ASAR);
 	
 	min = modf (time , &hour);
 	
 	ST_ATHAN_TIME athan_time;
 	athan_time.hour = int(hour);
-	athan_time.min = int(min*60 + m_offset_time);
+	athan_time.min = int(min*60);
 	athan_time.sec = 0;
 	
 	return Calculate_Time_Update(Get_Athan_Zuhur(), athan_time, true);
@@ -389,7 +391,7 @@ ST_ATHAN_TIME Athan::Get_Athan_Maghrib()
 	
 	ST_ATHAN_TIME athan_time;
 	athan_time.hour = int(hour);
-	athan_time.min = int(min*60 + m_offset_time);
+	athan_time.min = int(min*60);
 	athan_time.sec = 0;
 	
 	return Calculate_Time_Update(Get_Athan_Zuhur(), athan_time, true);
@@ -410,7 +412,7 @@ ST_ATHAN_TIME Athan::Get_Athan_Isyak()
 	
 	ST_ATHAN_TIME athan_time;
 	athan_time.hour = int(hour);
-	athan_time.min = int(min*60 + m_offset_time);
+	athan_time.min = int(min*60);
 	athan_time.sec = 0;
 	
 	return Calculate_Time_Update(Get_Athan_Zuhur(), athan_time, true);
@@ -444,9 +446,9 @@ double Athan::Calculate_Equation_of_Time()
 #ifdef UNIT_TEST
 int main() {
 	
-	float offset = 3;
-	double latitude = 1.485561;
-	double longitude = 103.387856;
+	float offset = 0;
+	double latitude = 1.65;
+	double longitude = 103.2;
 	
 	ST_ATHAN_TIME temp_subuh;
 	ST_ATHAN_TIME temp_sunrise;
@@ -471,12 +473,15 @@ int main() {
 	temp_maghrib = Athan::GetInstance()->Get_Athan_Time(EN_ATHAN_TIME_MAGHRIB);
 	temp_isyak = Athan::GetInstance()->Get_Athan_Time(EN_ATHAN_TIME_ISYAK);
 	
+	cout << endl;
+	cout << "########################" << endl;
 	cout << "Subuh is at " << temp_subuh.hour << ":" << setfill('0') << setw(2) << temp_subuh.min << endl;
 	cout << "Sunrise is at " << temp_sunrise.hour << ":" << setfill('0') << setw(2) << temp_sunrise.min << endl;
 	cout << "Zuhur is at " << temp_zuhur.hour << ":" << setfill('0') << setw(2) << temp_zuhur.min << endl;
 	cout << "Asar is at " << temp_asar.hour << ":" << setfill('0') << setw(2) << temp_asar.min << endl;
 	cout << "Maghrib is at " << temp_maghrib.hour << ":" << setfill('0') << setw(2) << temp_maghrib.min << endl;
 	cout << "Isyak is at " << temp_isyak.hour << ":" << setfill('0') << setw(2) << temp_isyak.min << endl;
+	cout << "########################" << endl;
 	
 	return 0;
 }

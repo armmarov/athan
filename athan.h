@@ -31,6 +31,7 @@
 #define SUN_ANGLE_ASAR			  0
 #define SUN_ANGLE_MAGHRIB		  0.8333
 #define SUN_ANGLE_ISYAK 		  18
+#define T_ASAR                    1.5
 
 #define PI						  3.14159
 #define DEG_TO_RAD				  PI / 180
