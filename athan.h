@@ -7,7 +7,7 @@
 #ifndef __ATHAN_H__
 #define __ATHAN_H__
 
-#define SOLAR_DECLINATION     -23.44
+#define EARTH_TILT            -23.44
 #define OFFSET_DAY_PASS           10
 #define DAYS                     360
 #define TIMEZONE_MALAYSIA          8

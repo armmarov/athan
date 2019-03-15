@@ -269,7 +269,7 @@ double Athan::arccot(double x)
 ST_ATHAN_TIME Athan::Calculate_Time_Update(ST_ATHAN_TIME t1, ST_ATHAN_TIME t2, bool isUpward) {
 	
 	ST_ATHAN_TIME ret;
-	
+
 	if(isUpward) {
 		ret.hour = t1.hour + t2.hour;
 		ret.min = t1.min + t2.min;
@@ -349,9 +349,9 @@ ST_ATHAN_TIME Athan::Get_Athan_Zuhur()
 	
 	ST_ATHAN_TIME athan_time;
 	athan_time.hour = int(hour);
-	athan_time.min = int(min*60 - Calculate_Equation_of_Time() + m_offset_time);
+	athan_time.min = int(min*60) - Calculate_Equation_of_Time() + m_offset_time;
 	athan_time.sec = 0;
-	
+
 	return athan_time;
 }
 
@@ -425,10 +425,11 @@ ST_ATHAN_TIME Athan::Get_Athan_Isyak()
 */
 double Athan::Calculate_Declination_of_Sun()
 {
+	// Link : https://sciencing.com/calculate-suns-declination-6904335.html
 	if(Get_Current_Year()%4==0)
-		return SOLAR_DECLINATION * cos((DAYS/TOTAL_DAYS_IN_LEAP_YEARS) * (Get_Current_Day_In_Year()+10) * DEG_TO_RAD);
+		return EARTH_TILT * cos((DAYS/TOTAL_DAYS_IN_LEAP_YEARS) * (Get_Current_Day_In_Year()+10) * DEG_TO_RAD);
 	else 
-		return SOLAR_DECLINATION * cos((DAYS/TOTAL_DAYS_IN_YEARS) * (Get_Current_Day_In_Year()+10) * DEG_TO_RAD);
+		return EARTH_TILT * cos((DAYS/TOTAL_DAYS_IN_YEARS) * (Get_Current_Day_In_Year()+10) * DEG_TO_RAD);
 }
 
 /*
@@ -438,9 +439,10 @@ double Athan::Calculate_Declination_of_Sun()
 */
 double Athan::Calculate_Equation_of_Time()
 {
-	double d1 = sin(Get_Current_Day_In_Year());
-	double d2 = sin(2*Get_Current_Day_In_Year() + 3.588);
-	return (-7.655 * d1)  + (9.873 * d2);
+	// Link : https://www.intmath.com/blog/mathematics/the-equation-of-time-5039
+	double d1 = -7.655 * sin(Get_Current_Day_In_Year() * DEG_TO_RAD);
+	double d2 = 9.873 * sin(2 * (Get_Current_Day_In_Year() * DEG_TO_RAD) + 3.588);
+	return d1 + d2;
 }
 
 #ifdef UNIT_TEST
