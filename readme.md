@@ -1,18 +1,23 @@
-This program is made to calculate athan prayer time.
+# This program is made to calculate athan prayer time.
 
-How to compile ?
+## How to compile ?
 
-1. To run unit_test:
+#### 1. To run unit_test:
 
-   >> make unit_test
-   >> ./athan
+```bash
+$ make unit_test
+$ ./athan
+..
+```
 
-2. To compile as a static library. It will generate "athan.a" file.
+#### 2. To compile as a static library. It will generate "athan.a" file.
 
-   >> make 
+```bash
+$ make 
+..
+```
 
-
-Public APIs
+## Public APIs
 
    API            | Return           | Argument         | Function
                   |                  |                  |
@@ -25,7 +30,7 @@ Get_Longitude     |  double          | -                | Get longitude value
 Get_Athan_Time    |  ST_ATHAN_TIME   | EN_ATHAN_TIME    | Get Athan time
  
  
-How to use ?
+## How to use ?
 
 1. This class is built using the singleton method.
 2. At first user has to set the offest value by using Set_Offset API.
